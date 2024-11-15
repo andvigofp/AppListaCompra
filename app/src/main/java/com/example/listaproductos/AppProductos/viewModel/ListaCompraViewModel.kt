@@ -22,10 +22,17 @@ class ListaCompraViewModel : ViewModel() {
     }
 
     // Función para agregar un producto
+    // Función para agregar un producto, evitando duplicados (ignora mayúsculas y minúsculas)
     fun addProducto(producto: String) {
-        _state.value = _state.value.copy(
-            listaCompra = _state.value.listaCompra + Producto(producto)
-        )
+        // Convertir el nombre del producto a minúsculas para la comparación
+        val productoNormalizado = producto.lowercase()
+
+        // Verificar si el producto ya existe en la lista, ignorando mayúsculas y minúsculas
+        if (_state.value.listaCompra.none { it.nombre.lowercase() == productoNormalizado }) {
+            _state.value = _state.value.copy(
+                listaCompra = _state.value.listaCompra + Producto(producto)
+            )
+        }
     }
 
     // Función para eliminar un producto
